@@ -13,9 +13,10 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "express-promise-router": "^3.0.3",
     "express-validator": "^6.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.6.11",
+    "pg": "^7.12.1",
     "request": "^2.88.0"
   },
   "devDependencies": {
