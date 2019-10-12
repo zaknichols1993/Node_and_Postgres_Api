@@ -2,15 +2,16 @@ const Router = require('express-promise-router')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
+const auth = require('../../middleware/auth');
 
-const db = require('../../db/index')
+const db = require('../../db/index.js')
 
 const router = new Router()
 
 // @route    GET api/users
-// @desc     Test Route
+// @desc     Get all users
 // @access   Public
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const { rows } = await db.query('SELECT * FROM public.users')
         res.json(rows)
@@ -20,7 +21,7 @@ router.get('/', async (req, res) => {
 })
 
 // @route    POST api/users
-// @desc     Register user
+// @desc     Register a user
 // @access   Public
 router.post('/',
     [
@@ -54,7 +55,7 @@ router.post('/',
 
             password = await bcrypt.hash(password, salt);
 
-            const { rows } = await db.query('INSERT INTO public.users (name, email, password) VALUES ($1, $2, $3) RETURNING *', [name, email, password])
+            const { rows } = await db.query(`INSERT INTO public.users (name, email, password) VALUES ($1, $2, $3) RETURNING *`, [name, email, password])
 
             const payload = {
                 user: {

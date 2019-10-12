@@ -8,18 +8,6 @@ const db = require('../../db/index')
 
 const router = new Router()
 
-// @route    GET api/auth
-// @desc     Test Route
-// @access   Public
-router.get('/', auth, async (req, res) => {
-  try {
-    const { rows } = await db.query('SELECT name, email, id FROM public.users')
-    res.json(rows)
-  } catch (err) {
-    console.error(err)
-  }
-})
-
 // @route    POST api/auth
 // @desc     Register user
 // @access   Public
@@ -41,6 +29,7 @@ router.post('/',
 
     try {
       let user = await db.query('SELECT email, password, user_id FROM public.users WHERE email = $1', [email])
+
       if (user.rows[0] <= 0) {
         return res
           .status(400)
@@ -70,11 +59,9 @@ router.post('/',
           res.json({ token });
         }
       );
-
     } catch (err) {
       console.error(err.stack)
     }
-
   });
 
 module.exports = router
